@@ -11,8 +11,8 @@ public class HP extends Thread {
 
 	public void run() {
 		try {
-			ba.send("/queue/Pong","HelloPong,Ping");
-			String res = ba.receive("/queue/Ping");
+			ba.send("/queue/PongSplitter","HelloPong,Ping");
+			String res = ba.receive("/queue/PingSplitter");
 			System.out.println("Ping got: " + res);
 			ba.finish();
 		} 

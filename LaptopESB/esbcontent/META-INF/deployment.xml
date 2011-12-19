@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <jbossesb-deployment>
- <jmsQueue>Asus</jmsQueue>
- <jmsQueue>Asus_reply</jmsQueue>
- <jmsQueue>Apple</jmsQueue>
- <jmsQueue>Apple_reply</jmsQueue>
- <jmsQueue>HP</jmsQueue>
- <jmsQueue>HP_reply</jmsQueue>
+ <jmsQueue>AsusSplitter</jmsQueue>
+ <jmsQueue>Asus_replySplitter</jmsQueue>
+ <jmsQueue>AppleSplitter</jmsQueue>
+ <jmsQueue>Apple_replySplitter</jmsQueue>
+ <jmsQueue>HPSplitter</jmsQueue>
+ <jmsQueue>HP_replySplitter</jmsQueue>
 </jbossesb-deployment>

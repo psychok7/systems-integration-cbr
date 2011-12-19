@@ -9,9 +9,9 @@ import util.Agent;
 		}
 		public void run() {
 			try {
-				String res = ba.receive("/queue/Pong");
+				String res = ba.receive("/queue/AsusSplitter");
 				System.out.println("Pong got: " + res);
-				ba.send("/queue/Ping","HelloPing,Pong");
+				ba.send("/queue/AppleSplitter","HelloPing,Pong");
 				ba.finish();
 			}
 			catch (Exception e) {

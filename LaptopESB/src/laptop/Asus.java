@@ -11,8 +11,8 @@ public class Asus extends Thread {
 
 	public void run() {
 		try {
-			ba.send("/queue/Pong","HelloPong,Ping");
-			String res = ba.receive("/queue/Ping");
+			ba.send("/queue/AsusSplitter","HelloPong,Ping");
+			String res = ba.receive("/queue/AppleSplitter");
 			System.out.println("Ping got: " + res);
 			ba.finish();
 		} 
