@@ -13,8 +13,9 @@ public class Client {
 	public static void main(String[] args){
 
 			try {
+				
 				Agent a = new Agent();
-				a.send("queue/request", "aPPle");
+				a.send("queue/request", "asus");
 				a.finish();
 			} catch (NamingException e) {
 				// TODO Auto-generated catch block

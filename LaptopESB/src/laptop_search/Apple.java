@@ -10,6 +10,7 @@ import javax.jms.JMSException;
 import javax.naming.NamingException;
 
 import util.Agent;
+import util.XmlManager;
 
 
 public class Apple {
@@ -23,15 +24,10 @@ public class Apple {
 
 				System.out.println("[APPLE_STORE3]  Recebi um pedido! "+resp.get("body"));
 
-				File file = new File("xmldb/Asus.xml");
-//				Scanner scan = new Scanner(file);  
-//				scan.useDelimiter("\\Z");  
-//				String content = scan.next();
-//				System.out.println("[APPLE_STORE]\n"+content+"\n\n");
-
 				Map<String,Object> resp2 = new HashMap<String,Object>();
 				Map<String,Object> resp3 = new HashMap<String,Object>();
-				resp3.put("apple",file);
+				
+				resp3.put("apple",new XmlManager().convertXMLFileToString("xmldb/Apple.xml"));
 				resp2.put("body", resp3);
 				resp2.put("ContextInfo",resp.get("ContextInfo"));
 	//			agent.send(resp2);

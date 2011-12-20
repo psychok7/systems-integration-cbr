@@ -82,6 +82,14 @@ public class Agent
 		cnsmr.close();		
 		return (Map<String,Object>) msg.getObject();
 	}
+	public Map<String,String> receiveFinal(String inboxname) throws NamingException, JMSException {
+		System.out.println("capaz");
+		Destination inbox = (Destination) init.lookup(inboxname);
+		MessageConsumer cnsmr = session.createConsumer(inbox);
+		ObjectMessage msg = (ObjectMessage) cnsmr.receive();
+		cnsmr.close();		
+		return (Map<String,String>) msg.getObject();
+	}
 
 	public void finish() throws JMSException {
 		conn.close();

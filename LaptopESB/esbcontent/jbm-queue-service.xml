@@ -45,14 +45,20 @@
 	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
   </mbean>
   
-  <mbean code="org.jboss.jms.server.destination.QueueService"
-    name="jboss.esb.quickstart.destination:service=Queue,name=aggregator"
+    <mbean code="org.jboss.jms.server.destination.QueueService"
+    name="jboss.esb.quickstart.destination:service=Queue,name=toAggregator"
     xmbean-dd="xmdesc/Queue-xmbean.xml">
 	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
   </mbean>
   
   <mbean code="org.jboss.jms.server.destination.QueueService"
-    name="jboss.esb.quickstart.destination:service=Queue,name=beautifier"
+    name="jboss.esb.quickstart.destination:service=Queue,name=toBeautifier"
+    xmbean-dd="xmdesc/Queue-xmbean.xml">
+	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+  </mbean>
+  
+  <mbean code="org.jboss.jms.server.destination.QueueService"
+    name="jboss.esb.quickstart.destination:service=Queue,name=toClient"
     xmbean-dd="xmdesc/Queue-xmbean.xml">
 	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
   </mbean>

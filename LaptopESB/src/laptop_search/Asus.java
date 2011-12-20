@@ -10,6 +10,7 @@ import javax.jms.JMSException;
 import javax.naming.NamingException;
 
 import util.Agent;
+import util.XmlManager;
 
 
 public class Asus {
@@ -18,31 +19,22 @@ public class Asus {
 		while(true){
 			try {
 				Agent agent = new Agent();
+				Map<String,Object> map=agent.receive("queue/asus_store");
 
-				 Map<String,Object> resp=agent.receive("queue/asus_store");
+				System.out.println("[ASUS_STORE]  Recebi um pedido! "+map.get("body"));
 
-				System.out.println("[ASUS_STORE3]  Recebi um pedido! "+resp.get("body"));
-
-				File file = new File("xmldb/Asus.xml");
-//				Scanner scan = new Scanner(file);  
-//				scan.useDelimiter("\\Z");  
-//				String content = scan.next();
-//				System.out.println("[APPLE_STORE]\n"+content+"\n\n");
-
-				Map<String,Object> resp2 = new HashMap<String,Object>();
-				Map<String,Object> resp3 = new HashMap<String,Object>();
-				resp3.put("asus",file);
-				resp2.put("body", resp3);
-				resp2.put("ContextInfo",resp.get("ContextInfo"));
-	//			agent.send(resp2);
+				Map<String,Object> map2 = new HashMap<String,Object>();
+				Map<String,Object> map3 = new HashMap<String,Object>();
+				map3.put("asus",new XmlManager().convertXMLFileToString("xmldb/Asus.xml"));
+				map2.put("body", map3);
+				map2.put("ContextInfo",map.get("ContextInfo"));
+				agent.sendObject("queue/toAggregator",map2);
 				agent.finish();
 			} catch (NamingException e) {
 				// TODO Auto-generated catch block
-				System.out.println("[ASUS_STORE] ERROR: NAMING EXCEPTION");
 				e.printStackTrace();
 			} catch (JMSException e) {
 				// TODO Auto-generated catch block
-				System.out.println("[ASUS_STORE] ERROR: JMS EXCEPTION");
 				e.printStackTrace();
 			}
 

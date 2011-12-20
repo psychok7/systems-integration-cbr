@@ -9,6 +9,14 @@ import org.jboss.soa.esb.helpers.ConfigTree;
 import org.jboss.soa.esb.listeners.message.MessageDeliverException;
 import org.jboss.soa.esb.message.Message;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jboss.soa.esb.actions.AbstractActionLifecycle;
+import org.jboss.soa.esb.helpers.ConfigTree;
+import org.jboss.soa.esb.listeners.message.MessageDeliverException;
+import org.jboss.soa.esb.message.Message;
+
 public class messageHandler extends AbstractActionLifecycle
 {
 
@@ -35,10 +43,11 @@ public class messageHandler extends AbstractActionLifecycle
 	public Message getContextBack(Message message) throws MessageDeliverException
 	{
 		Map<String, Object> map = (Map<String, Object>) message.getBody().get();
-		String body = (String) map.get("body");
+		Object body = (Object) map.get("body");
 		message.getBody().add(body);
-		Object o = map.get("ContextInfo");
-		message.getContext().setContext("aggregatorTag", o);
+		Object o=map.get("ContextInfo");
+		if(o!=null)
+			message.getContext().setContext("aggregatorTag", o);
 
 		return message;
 	}

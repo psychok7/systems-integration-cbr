@@ -17,7 +17,7 @@
     <jms-message-filter dest-name="queue/hp" dest-type="QUEUE"/>
    </jms-bus>
    <jms-bus busid="AggregatorGW">
-    <jms-message-filter dest-name="queue/Aggregator" dest-type="QUEUE"/>
+    <jms-message-filter dest-name="queue/toAggregator" dest-type="QUEUE"/>
    </jms-bus>
   </jms-provider>
  </providers>
@@ -103,6 +103,30 @@
    </actions>
   </service>
   
+ <service category="Aggregator"
+   description="Aggregate all messages"
+   invmScope="GLOBAL" name="doAggregation">
+   <listeners>
+    <!-- Gateway -->
+    <jms-listener busidref="AggregatorGW" is-gateway="true" name="TheGateway"/>
+   </listeners>
+   <actions mep="OneWay">
+   		
+   	   <action class="util.messageHandler" process="getContextBack" name="loadCxtInfo" />
+	   <action class="org.jboss.soa.esb.actions.Aggregator" name="Aggregator">
+           <property name="timeoutInMillies" value="60000"/>
+       </action>
+       <!-- add transformation action to aggregate the attachments into 1 message -->
+       <action name="assemble" class="beautifier.AggregatedMessageAssembler" />
+       <action name="routeToReplyQueue" class="org.jboss.soa.esb.actions.routing.JMSRouter">		
+			<property name="connection-factory" value="ConnectionFactory"/>
+			<property name="jndiName" value="queue/toBeautifier"/>
+			<property name="unwrap" value="true"/>
+			<property name="security-principal" value="guest"/>
+			<property name="security-credential" value="guest"/>
+	   </action>
+   </actions>
+   </service>
 
   
  </services>
