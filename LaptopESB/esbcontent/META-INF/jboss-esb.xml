@@ -16,8 +16,8 @@
    <jms-bus busid="hp">
     <jms-message-filter dest-name="queue/hp" dest-type="QUEUE"/>
    </jms-bus>
-   <jms-bus busid="AggregatorGW">
-    <jms-message-filter dest-name="queue/toAggregator" dest-type="QUEUE"/>
+   <jms-bus busid="Aggregator">
+    <jms-message-filter dest-name="queue/aggregator" dest-type="QUEUE"/>
    </jms-bus>
   </jms-provider>
  </providers>
@@ -108,7 +108,7 @@
    invmScope="GLOBAL" name="doAggregation">
    <listeners>
     <!-- Gateway -->
-    <jms-listener busidref="AggregatorGW" is-gateway="true" name="TheGateway"/>
+    <jms-listener busidref="Aggregator" is-gateway="true" name="TheGateway"/>
    </listeners>
    <actions mep="OneWay">
    		
@@ -120,7 +120,7 @@
        <action name="assemble" class="beautifier.AggregatedMessageAssembler" />
        <action name="routeToReplyQueue" class="org.jboss.soa.esb.actions.routing.JMSRouter">		
 			<property name="connection-factory" value="ConnectionFactory"/>
-			<property name="jndiName" value="queue/toBeautifier"/>
+			<property name="jndiName" value="queue/beautifier"/>
 			<property name="unwrap" value="true"/>
 			<property name="security-principal" value="guest"/>
 			<property name="security-credential" value="guest"/>

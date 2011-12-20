@@ -28,7 +28,7 @@ public class Asus {
 				map3.put("asus",new XmlManager().convertXMLFileToString("xmldb/Asus.xml"));
 				map2.put("body", map3);
 				map2.put("ContextInfo",map.get("ContextInfo"));
-				agent.sendObject("queue/toAggregator",map2);
+				agent.sendObject("queue/aggregator",map2);
 				agent.finish();
 			} catch (NamingException e) {
 				// TODO Auto-generated catch block

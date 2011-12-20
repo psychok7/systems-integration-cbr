@@ -7,7 +7,7 @@
   <jmsQueue>apple_store</jmsQueue>
   <jmsQueue>asus_store</jmsQueue>
   <jmsQueue>hp_store</jmsQueue>
-  <jmsQueue>toAggregator</jmsQueue>
-  <jmsQueue>toBeautifier</jmsQueue>
-  <jmsQueue>toClient</jmsQueue>
+  <jmsQueue>aggregator</jmsQueue>
+  <jmsQueue>beautifier</jmsQueue>
+  <jmsQueue>client</jmsQueue>
 </jbossesb-deployment>

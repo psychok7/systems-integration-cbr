@@ -33,8 +33,6 @@ public class messageHandler extends AbstractActionLifecycle
 		Map<String, Object> outmap = new HashMap<String, Object>();
 		outmap.put("body", message.getBody().get());
 		outmap.put("ContextInfo", message.getContext().getContext("aggregatorTag"));
-//		System.out.println("KEEP CONTEXT "+outmap.get("ContextInfo"));
-//		System.out.println("KEEP CONTEXT "+message.getContext().toString());
 		message.getBody().add(outmap);
 		return message;
 	}
