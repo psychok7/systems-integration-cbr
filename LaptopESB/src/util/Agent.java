@@ -18,22 +18,7 @@ import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import java.io.Serializable;
-import java.util.Map;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageProducer;
-import javax.jms.ObjectMessage;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import org.jboss.jms.message.ObjectMessageProxy;
 
 
 public class Agent 
@@ -83,7 +68,6 @@ public class Agent
 		return (Map<String,Object>) msg.getObject();
 	}
 	public Map<String,String> receiveFinal(String inboxname) throws NamingException, JMSException {
-		System.out.println("capaz");
 		Destination inbox = (Destination) init.lookup(inboxname);
 		MessageConsumer cnsmr = session.createConsumer(inbox);
 		ObjectMessage msg = (ObjectMessage) cnsmr.receive();
