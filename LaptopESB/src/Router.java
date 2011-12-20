@@ -6,8 +6,6 @@ import org.jboss.soa.esb.listeners.message.MessageDeliverException;
 import splitter.SplitAction;
 import util.Agent;
 
-import laptop.Apple;
-import laptop.Asus;
 
 
 	
@@ -19,7 +17,7 @@ import laptop.Asus;
 			SplitAction x= new SplitAction();
 			
 			try {
-				x.split_msg(null);
+				x.split_msg("testandoAPPLE");
 			} catch (MessageDeliverException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

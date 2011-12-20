@@ -1,12 +1,18 @@
 package util;
 
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.naming.InitialContext;
@@ -30,20 +36,27 @@ public class Agent {
 		session = conn.createSession(false,Session.AUTO_ACKNOWLEDGE);
 	}
 	
-	public void send(String outboxname, String text) throws NamingException, JMSException {
+	public void send(String outboxname, Map<String,Object> msg) throws NamingException, JMSException {
 		Destination outbox = (Destination) init.lookup(outboxname);
 		MessageProducer sndr = session.createProducer(outbox);
-		TextMessage msg = session.createTextMessage(text);
-		sndr.send(msg);
+		
+		String body = (String) msg.get("body");
+		System.out.println("agent send: "+body);
+		
+		ObjectMessage message = session.createObjectMessage();
+	    message.setObject((Serializable) msg);
+		
+		sndr.send(message);
 		sndr.close();
 	}
 	
-	public String receive(String inboxname) throws NamingException, JMSException {
+	@SuppressWarnings("unchecked")
+	public Map<String,Object>receive(String inboxname) throws NamingException, JMSException {
 		Destination inbox = (Destination) init.lookup(inboxname);
 		MessageConsumer cnsmr = session.createConsumer(inbox);
-		TextMessage replymsg = (TextMessage) cnsmr.receive();
-		cnsmr.close();
-		return replymsg.getText();
+		ObjectMessage msg = (ObjectMessage) cnsmr.receive();
+		cnsmr.close();		
+		return (Map<String,Object>) msg.getObject();
 	}
 	
 	public void finish() throws JMSException {

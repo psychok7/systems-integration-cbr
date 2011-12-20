@@ -1,12 +1,13 @@
 package splitter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.jms.JMSException;
 import javax.naming.NamingException;
 
-import laptop.Apple;
-import laptop.Asus;
+import laptop_router.RouteAction;
 
 import org.jboss.soa.esb.actions.AbstractActionLifecycle;
 import org.jboss.soa.esb.helpers.ConfigTree;
@@ -15,9 +16,10 @@ import org.jboss.soa.esb.message.Message;
 
 import util.Agent;
 
+import org.jboss.soa.esb.message.format.MessageFactory;
+import org.jboss.soa.esb.client.ServiceInvoker;
 
-
-public class SplitAction {
+public class SplitAction extends AbstractActionLifecycle{
 
 	protected ConfigTree _config;
 
@@ -28,14 +30,25 @@ public class SplitAction {
 		
 	}
 
-	public void split_msg(Message message) throws MessageDeliverException, NamingException, JMSException {
-		System.out.println("chegou");
-		Agent aping = new Agent();
-		Asus pi = new Asus(aping);
-		pi.start();
-		Agent apong = new Agent();
-		Apple po = new Apple(apong);
-		po.start();
+	public void split_msg(String aux) throws MessageDeliverException, NamingException, JMSException {
 		
+		Message message = MessageFactory.getInstance().getMessage();
+		message.getBody().add(aux);
+		
+
+		Map<String, Object> outmap = new HashMap<String, Object>();
+		
+		outmap.put("body", message.getBody().get());
+		outmap.put("ContextInfo", message.getContext().getContext("aggregatorTag"));
+		message.getBody().add(outmap);
+		
+		
+		Agent aping = new Agent();
+		aping.send("/queue/AsusSplitter",(Map<String, Object>) outmap);
+		aping.finish();
+		
+		
+		RouteAction route=new RouteAction(null);
+		route.route_msg(null);
 	}
 }
