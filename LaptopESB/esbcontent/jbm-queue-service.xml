@@ -1,40 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <server>
 
- <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=AsusSplitter"
-  xmbean-dd="xmdesc/Queue-xmbean.xml">
-  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
-  </depends>
- </mbean>
   <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=Asus_replySplitter"
-  xmbean-dd="xmdesc/Queue-xmbean.xml">
-  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
-  </depends>
- </mbean>
- <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=AppleSplitter"
-  xmbean-dd="xmdesc/Queue-xmbean.xml">
-  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
-  </depends>
- </mbean>
+    name="jboss.esb.quickstart.destination:service=Queue,name=request"
+    xmbean-dd="xmdesc/Queue-xmbean.xml">
+    <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+	<depends>jboss.messaging:service=PostOffice</depends>
+  </mbean>
+
   <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=Apple_replySplitter"
-  xmbean-dd="xmdesc/Queue-xmbean.xml">
-  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
-  </depends>
- </mbean>
+    name="jboss.esb.quickstart.destination:service=Queue,name=apple"
+    xmbean-dd="xmdesc/Queue-xmbean.xml">
+	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+  </mbean>
+  
   <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=HPSplitter"
-  xmbean-dd="xmdesc/Queue-xmbean.xml">
-  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
-  </depends>
- </mbean>
-   <mbean code="org.jboss.jms.server.destination.QueueService"
-  name="jboss.esb.quickstart.destination:service=Queue,name=HP_replySplitter"
-  xmbean-dd="xmdesc/Queue-xmbean.xml">
-  <depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer
-  </depends>
- </mbean>
+    name="jboss.esb.quickstart.destination:service=Queue,name=asus"
+    xmbean-dd="xmdesc/Queue-xmbean.xml">
+	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+  </mbean>
+  
+  <mbean code="org.jboss.jms.server.destination.QueueService"
+    name="jboss.esb.quickstart.destination:service=Queue,name=hp"
+    xmbean-dd="xmdesc/Queue-xmbean.xml">
+	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+  </mbean>
+
+<mbean code="org.jboss.jms.server.destination.QueueService"
+    name="jboss.esb.quickstart.destination:service=Queue,name=apple_store"
+    xmbean-dd="xmdesc/Queue-xmbean.xml">
+	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+  </mbean>
+  
+  <mbean code="org.jboss.jms.server.destination.QueueService"
+    name="jboss.esb.quickstart.destination:service=Queue,name=asus_store"
+    xmbean-dd="xmdesc/Queue-xmbean.xml">
+	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+  </mbean>
+  
+  <mbean code="org.jboss.jms.server.destination.QueueService"
+    name="jboss.esb.quickstart.destination:service=Queue,name=hp_store"
+    xmbean-dd="xmdesc/Queue-xmbean.xml">
+	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+  </mbean>
+  
+  <mbean code="org.jboss.jms.server.destination.QueueService"
+    name="jboss.esb.quickstart.destination:service=Queue,name=aggregator"
+    xmbean-dd="xmdesc/Queue-xmbean.xml">
+	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+  </mbean>
+  
+  <mbean code="org.jboss.jms.server.destination.QueueService"
+    name="jboss.esb.quickstart.destination:service=Queue,name=beautifier"
+    xmbean-dd="xmdesc/Queue-xmbean.xml">
+	<depends optional-attribute-name="ServerPeer">jboss.messaging:service=ServerPeer</depends>
+  </mbean>
+  
 </server>

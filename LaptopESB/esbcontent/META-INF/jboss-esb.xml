@@ -3,16 +3,107 @@
  xmlns="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd http://anonsvn.jboss.org/repos/labs/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd">
  <providers>
-  <jms-provider connection-factory="ConnectionFactory" name="JMS">
-   <jms-bus busid="AsusRequestSplitter">
-    <jms-message-filter dest-name="queue/AsusSplitter" dest-type="QUEUE"/>
+  <jms-provider connection-factory="ConnectionFactory" name="JBossMQ">
+   <jms-bus busid="TheGateWay">
+    <jms-message-filter dest-name="queue/request" dest-type="QUEUE"/>
    </jms-bus>
-   <jms-bus busid="AppleRequestSplitter">
-    <jms-message-filter dest-name="queue/AppleSplitter" dest-type="QUEUE"/>
+   <jms-bus busid="apple">
+    <jms-message-filter dest-name="queue/apple" dest-type="QUEUE"/>
    </jms-bus>
-   <jms-bus busid="HPRequestSplitter">
-    <jms-message-filter dest-name="queue/HPSplitter" dest-type="QUEUE"/>
+   <jms-bus busid="asus">
+    <jms-message-filter dest-name="queue/asus" dest-type="QUEUE"/>
+   </jms-bus>
+   <jms-bus busid="hp">
+    <jms-message-filter dest-name="queue/hp" dest-type="QUEUE"/>
+   </jms-bus>
+   <jms-bus busid="AggregatorGW">
+    <jms-message-filter dest-name="queue/Aggregator" dest-type="QUEUE"/>
    </jms-bus>
   </jms-provider>
  </providers>
+ <services>
+  <!-- ESB Regex CBR Service -->
+  <service category="Fun_CBRServices_ESB"
+   description="ESB Listener - for the native clients"
+   invmScope="GLOBAL" name="Regex_FunCBRService_ESB">
+   <listeners>
+    <!-- Gateway -->
+    <jms-listener busidref="TheGateWay" is-gateway="true" name="TheGateway"/>
+   </listeners>
+   <actions mep="OneWay">
+    <action class="org.jboss.soa.esb.actions.ContentBasedRouter" name="ContentBasedRouter">
+     <property name="cbrAlias" value="Regex"/>
+     <property name="ruleLanguage"/>
+     <property name="destinations">
+      <route-to expression=".*[aA][sS][uU][sS].*"
+       service-category="AsusLaptopSearch" service-name="asusrequest"/>
+       <route-to expression=".*[aA][pP][pP][lL][eE].*"
+       service-category="AppleLaptopSearch" service-name="applerequest"/>
+      <route-to expression=".*[hH][pP].*"
+       service-category="HPLaptopSearch" service-name="HPrequest"/>
+     </property>
+    </action>
+   </actions>
+  </service>
+  <service category="AsusLaptopSearch"
+   description="AsusLaptopSearch: Use this service to invoke the service" name="asusrequest">
+   <listeners>
+    <jms-listener busidref="asus" name="ESB-Listener"/>
+   </listeners>
+   <actions mep="OneWay">
+    <action class="org.jboss.soa.esb.actions.SystemPrintln" name="printMessage">
+     <property name="message" value="ASUS ------- ASUS"/>
+    </action>
+    <action class="util.messageHandler" name="saveCxtInfo" process="keepContext"/>
+    <action class="org.jboss.soa.esb.actions.routing.JMSRouter" name="routeToReplyQueue">
+     <property name="jndiName" value="queue/asus_store"/>
+     <property name="connection-factory" value="ConnectionFactory"/>
+     <property name="unwrap" value="true"/>
+     <property name="security-principal" value="guest"/>
+     <property name="security-credential" value="guest"/>
+    </action>
+   </actions>
+  </service>
+  <service category="AppleLaptopSearch"
+   description="AppleLaptopSearch: Use this service to invoke the service" name="applerequest">
+   <listeners>
+    <jms-listener busidref="apple" name="ESB-Listener1"/>
+   </listeners>
+   <actions mep="OneWay">
+    <action class="org.jboss.soa.esb.actions.SystemPrintln" name="printMessage">
+     <property name="message" value="APPLE ------- APPLE"/>
+    </action>
+    <action class="util.messageHandler" name="saveCxtInfo" process="keepContext"/>
+    <action class="org.jboss.soa.esb.actions.routing.JMSRouter" name="routeToReplyQueue">
+     <property name="jndiName" value="queue/apple_store"/>
+     <property name="connection-factory" value="ConnectionFactory"/>
+     <property name="unwrap" value="true"/>
+     <property name="security-principal" value="guest"/>
+     <property name="security-credential" value="guest"/>
+    </action>
+   </actions>
+  </service>
+  <service category="HPLaptopSearch"
+   description="HPLaptopSearch: Use this service to invoke the service" name="HPrequest">
+   <listeners>
+    <jms-listener busidref="hp" name="ESB-Listener2"/>
+   </listeners>
+   <actions mep="OneWay">
+    <action class="org.jboss.soa.esb.actions.SystemPrintln" name="printMessage">
+     <property name="message" value="HP ------- HP"/>
+    </action>
+    <action class="util.messageHandler" name="saveCxtInfo" process="keepContext"/>
+    <action class="org.jboss.soa.esb.actions.routing.JMSRouter" name="routeToReplyQueue">
+     <property name="jndiName" value="queue/hp_store"/>
+     <property name="connection-factory" value="ConnectionFactory"/>
+     <property name="unwrap" value="true"/>
+     <property name="security-principal" value="guest"/>
+     <property name="security-credential" value="guest"/>
+    </action>
+   </actions>
+  </service>
+  
+
+  
+ </services>
 </jbossesb>

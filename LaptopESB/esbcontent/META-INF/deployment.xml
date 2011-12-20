@@ -1,9 +1,12 @@
 <?xml version="1.0"?>
 <jbossesb-deployment>
- <jmsQueue>AsusSplitter</jmsQueue>
- <jmsQueue>Asus_replySplitter</jmsQueue>
- <jmsQueue>AppleSplitter</jmsQueue>
- <jmsQueue>Apple_replySplitter</jmsQueue>
- <jmsQueue>HPSplitter</jmsQueue>
- <jmsQueue>HP_replySplitter</jmsQueue>
+  <jmsQueue>request</jmsQueue>
+  <jmsQueue>apple</jmsQueue>
+  <jmsQueue>asus</jmsQueue>
+  <jmsQueue>hp</jmsQueue>
+  <jmsQueue>apple_store</jmsQueue>
+  <jmsQueue>asus_store</jmsQueue>
+  <jmsQueue>hp_store</jmsQueue>
+  <jmsQueue>aggregator</jmsQueue>
+  <jmsQueue>beautifier</jmsQueue>
 </jbossesb-deployment>

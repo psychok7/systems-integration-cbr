@@ -1,37 +1,53 @@
-//package laptop_search;
-//
-//import java.util.HashMap;
-//
-//import javax.jms.ObjectMessage;
-//
-//import util.Agent;
-//
-//public class Asus extends Thread {
-//	private Agent ba;
-//	private Object obj;
-//
-//	public Asus(Agent ba) {
-//		this.ba = ba;
-//	}
-//
-//	public void setObj(Object obj) {
-//		this.obj = obj;
-//	}
-//
-//
-//	public Object getObj() {
-//		return obj;
-//	}
-//	@SuppressWarnings("unchecked")
-//	public void run() {
-//		try {
-//			ba.send("/queue/AsusSplitter",(HashMap<String, Object>) getObj());
-//			ObjectMessage res = ba.receive("/queue/AppleSplitter");
-//			System.out.println("Ping got: " + res.getObject());
-//			ba.finish();
-//		} 
-//		catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//}
+package laptop_search;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+import javax.jms.JMSException;
+import javax.naming.NamingException;
+
+import util.Agent;
+
+
+public class Asus {
+
+	public static void main(String[] args){
+		while(true){
+			try {
+				Agent agent = new Agent();
+
+				 Map<String,Object> resp=agent.receive("queue/asus_store");
+
+				System.out.println("[ASUS_STORE3]  Recebi um pedido! "+resp.get("body"));
+
+				File file = new File("xmldb/Asus.xml");
+//				Scanner scan = new Scanner(file);  
+//				scan.useDelimiter("\\Z");  
+//				String content = scan.next();
+//				System.out.println("[APPLE_STORE]\n"+content+"\n\n");
+
+				Map<String,Object> resp2 = new HashMap<String,Object>();
+				Map<String,Object> resp3 = new HashMap<String,Object>();
+				resp3.put("asus",file);
+				resp2.put("body", resp3);
+				resp2.put("ContextInfo",resp.get("ContextInfo"));
+	//			agent.send(resp2);
+				agent.finish();
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				System.out.println("[ASUS_STORE] ERROR: NAMING EXCEPTION");
+				e.printStackTrace();
+			} catch (JMSException e) {
+				// TODO Auto-generated catch block
+				System.out.println("[ASUS_STORE] ERROR: JMS EXCEPTION");
+				e.printStackTrace();
+			}
+
+		}
+
+	}
+
+}
