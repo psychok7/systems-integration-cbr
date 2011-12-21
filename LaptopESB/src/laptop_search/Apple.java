@@ -35,6 +35,7 @@ public class Apple {
 			try {
 				Agent agent = new Agent();				
 				agent.sendObject("queue/aggregator",manage(agent));
+				System.out.println("apple funca");
 				agent.finish();
 			} catch (NamingException e) {
 				// TODO Auto-generated catch block

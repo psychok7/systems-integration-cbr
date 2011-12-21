@@ -27,32 +27,14 @@ public class Transform {
 	 */
 	public static void main(String[] args) throws IOException, TransformerException {
 
-		String transform = "xsl/transformbrand.xsl";
-
 		while(true){
 			try{
 
 				Agent a = new Agent();
 				Map<String,String> resp;
-
-				resp=(Map<String,String>) a.receiveFinal("queue/beautifier");
-				HashMap<String,Object> toReturn=new HashMap<String, Object>();
-				for(String i:resp.keySet()){
-					System.out.println("Chave: "+i);
-					System.out.println("Valor: "+resp.get(i));
-//					TransformerFactory tFactory = TransformerFactory.newInstance();
-//					Source xmlSource = new StreamSource(resp.get(i));
-//					Source xslSource = new StreamSource(new File("transformbrand.xsl"));
-//					Transformer transformer = tFactory.newTransformer(xslSource);
-//					StreamResult result=new StreamResult(new StringWriter());
-//					transformer.transform(xmlSource, result);
-//
-//					toReturn.put(i,result.getWriter());
-
-				}
-
-//				a.sendObject("queue/client", toReturn);
-				a.finish();
+				resp=(Map<String,String>) a.receiveXml("queue/beautifier");
+				for(String i:resp.keySet())
+					System.out.println("Chave: "+i+" Valor: "+resp.get(i));
 
 			} catch (NamingException e) {
 				e.printStackTrace();

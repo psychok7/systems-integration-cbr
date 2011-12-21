@@ -67,7 +67,7 @@ public class Agent
 		cnsmr.close();		
 		return (Map<String,Object>) msg.getObject();
 	}
-	public Map<String,String> receiveFinal(String inboxname) throws NamingException, JMSException {
+	public Map<String,String> receiveXml(String inboxname) throws NamingException, JMSException {
 		Destination inbox = (Destination) init.lookup(inboxname);
 		MessageConsumer cnsmr = session.createConsumer(inbox);
 		ObjectMessage msg = (ObjectMessage) cnsmr.receive();
