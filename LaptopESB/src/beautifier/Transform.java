@@ -38,19 +38,20 @@ public class Transform {
 				resp=(Map<String,String>) a.receiveFinal("queue/beautifier");
 				HashMap<String,Object> toReturn=new HashMap<String, Object>();
 				for(String i:resp.keySet()){
-					System.out.println("------------------------------"+i);
-					TransformerFactory tFactory = TransformerFactory.newInstance();
-					Source xmlSource = new StreamSource(resp.get(i));
-					Source xslSource = new StreamSource(new File("transformbrand.xsl"));
-					Transformer transformer = tFactory.newTransformer(xslSource);
-					StreamResult result=new StreamResult(new StringWriter());
-					transformer.transform(xmlSource, result);
-
-					toReturn.put(i,result.getWriter());
+					System.out.println("Chave: "+i);
+					System.out.println("Valor: "+resp.get(i));
+//					TransformerFactory tFactory = TransformerFactory.newInstance();
+//					Source xmlSource = new StreamSource(resp.get(i));
+//					Source xslSource = new StreamSource(new File("transformbrand.xsl"));
+//					Transformer transformer = tFactory.newTransformer(xslSource);
+//					StreamResult result=new StreamResult(new StringWriter());
+//					transformer.transform(xmlSource, result);
+//
+//					toReturn.put(i,result.getWriter());
 
 				}
 
-				a.sendObject("queue/client", toReturn);
+//				a.sendObject("queue/client", toReturn);
 				a.finish();
 
 			} catch (NamingException e) {

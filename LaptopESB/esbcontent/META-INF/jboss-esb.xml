@@ -3,21 +3,21 @@
  xmlns="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://anonsvn.labs.jboss.com/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd http://anonsvn.jboss.org/repos/labs/labs/jbossesb/trunk/product/etc/schemas/xml/jbossesb-1.3.0.xsd">
  <providers>
-  <jms-provider connection-factory="ConnectionFactory" name="JBossMQ">
-   <jms-bus busid="TheGateWay">
-    <jms-message-filter dest-name="queue/request" dest-type="QUEUE"/>
+  <jms-provider name="JBossMQ" connection-factory="ConnectionFactory">
+   <jms-bus busid="router">
+    	<jms-message-filter dest-type="QUEUE" dest-name="queue/request"/>
    </jms-bus>
    <jms-bus busid="apple">
-    <jms-message-filter dest-name="queue/apple" dest-type="QUEUE"/>
+    	<jms-message-filter dest-type="QUEUE" dest-name="queue/apple" />
    </jms-bus>
    <jms-bus busid="asus">
-    <jms-message-filter dest-name="queue/asus" dest-type="QUEUE"/>
+    	<jms-message-filter dest-type="QUEUE" dest-name="queue/asus" />
    </jms-bus>
    <jms-bus busid="hp">
-    <jms-message-filter dest-name="queue/hp" dest-type="QUEUE"/>
+    	<jms-message-filter dest-type="QUEUE" dest-name="queue/hp" />
    </jms-bus>
    <jms-bus busid="Aggregator">
-    <jms-message-filter dest-name="queue/aggregator" dest-type="QUEUE"/>
+    	<jms-message-filter dest-type="QUEUE" dest-name="queue/aggregator" />
    </jms-bus>
   </jms-provider>
  </providers>
@@ -28,34 +28,27 @@
    invmScope="GLOBAL" name="Regex_FunCBRService_ESB">
    <listeners>
     <!-- Gateway -->
-    <jms-listener busidref="TheGateWay" is-gateway="true" name="TheGateway"/>
+    <jms-listener busidref="router" is-gateway="true" name="router"/>
    </listeners>
    <actions mep="OneWay">
     <action class="org.jboss.soa.esb.actions.ContentBasedRouter" name="ContentBasedRouter">
      <property name="cbrAlias" value="Regex"/>
      <property name="ruleLanguage"/>
      <property name="destinations">
-      <route-to expression=".*[aA][sS][uU][sS].*"
-       service-category="AsusLaptopSearch" service-name="asusrequest"/>
-       <route-to expression=".*[aA][pP][pP][lL][eE].*"
-       service-category="AppleLaptopSearch" service-name="applerequest"/>
-      <route-to expression=".*[hH][pP].*"
-       service-category="HPLaptopSearch" service-name="HPrequest"/>
+      <route-to expression=".*[aA][sS][uU][sS].*" service-category="AsusLaptopSearch" service-name="asusrequest"/>
+       <route-to expression=".*[aA][pP][pP][lL][eE].*" service-category="AppleLaptopSearch" service-name="applerequest"/>
+      <route-to expression=".*[hH][pP].*" service-category="HPLaptopSearch" service-name="HPrequest"/>
      </property>
     </action>
    </actions>
   </service>
-  <service category="AsusLaptopSearch"
-   description="AsusLaptopSearch: Use this service to invoke the service" name="asusrequest">
+  <service category="AsusLaptopSearch" description="AsusLaptopSearch: Use this service to invoke the service" name="asusrequest">
    <listeners>
-    <jms-listener busidref="asus" name="ESB-Listener"/>
+    <jms-listener name="ASUS-Listener" busidref="asus"/>
    </listeners>
-   <actions mep="OneWay">
-    <action class="org.jboss.soa.esb.actions.SystemPrintln" name="printMessage">
-     <property name="message" value="ASUS ------- ASUS"/>
-    </action>
-    <action class="util.messageHandler" name="saveCxtInfo" process="keepContext"/>
-    <action class="org.jboss.soa.esb.actions.routing.JMSRouter" name="routeToReplyQueue">
+   <actions mep="OneWay"> 
+    <action class="util.Context" name="saveCxtInfo" process="keepContext"/>
+    <action name="routeToReplyQueue" class="org.jboss.soa.esb.actions.routing.JMSRouter">
      <property name="jndiName" value="queue/asus_store"/>
      <property name="connection-factory" value="ConnectionFactory"/>
      <property name="unwrap" value="true"/>
@@ -67,14 +60,11 @@
   <service category="AppleLaptopSearch"
    description="AppleLaptopSearch: Use this service to invoke the service" name="applerequest">
    <listeners>
-    <jms-listener busidref="apple" name="ESB-Listener1"/>
+    <jms-listener name="APPLE-Listener" busidref="apple"/>
    </listeners>
    <actions mep="OneWay">
-    <action class="org.jboss.soa.esb.actions.SystemPrintln" name="printMessage">
-     <property name="message" value="APPLE ------- APPLE"/>
-    </action>
-    <action class="util.messageHandler" name="saveCxtInfo" process="keepContext"/>
-    <action class="org.jboss.soa.esb.actions.routing.JMSRouter" name="routeToReplyQueue">
+    <action class="util.Context" name="saveCxtInfo" process="keepContext"/>
+    <action name="routeToReplyQueue" class="org.jboss.soa.esb.actions.routing.JMSRouter">
      <property name="jndiName" value="queue/apple_store"/>
      <property name="connection-factory" value="ConnectionFactory"/>
      <property name="unwrap" value="true"/>
@@ -86,14 +76,11 @@
   <service category="HPLaptopSearch"
    description="HPLaptopSearch: Use this service to invoke the service" name="HPrequest">
    <listeners>
-    <jms-listener busidref="hp" name="ESB-Listener2"/>
+    <jms-listener name="HP-Listener" busidref="hp"/>
    </listeners>
    <actions mep="OneWay">
-    <action class="org.jboss.soa.esb.actions.SystemPrintln" name="printMessage">
-     <property name="message" value="HP ------- HP"/>
-    </action>
-    <action class="util.messageHandler" name="saveCxtInfo" process="keepContext"/>
-    <action class="org.jboss.soa.esb.actions.routing.JMSRouter" name="routeToReplyQueue">
+    <action class="util.Context" name="saveCxtInfo" process="keepContext"/>
+    <action name="routeToReplyQueue" class="org.jboss.soa.esb.actions.routing.JMSRouter">
      <property name="jndiName" value="queue/hp_store"/>
      <property name="connection-factory" value="ConnectionFactory"/>
      <property name="unwrap" value="true"/>
@@ -103,16 +90,12 @@
    </actions>
   </service>
   
- <service category="Aggregator"
-   description="Aggregate all messages"
-   invmScope="GLOBAL" name="doAggregation">
+ <service category="Aggregator" description="Aggregate messages" invmScope="GLOBAL" name="doAggregation">
    <listeners>
-    <!-- Gateway -->
-    <jms-listener busidref="Aggregator" is-gateway="true" name="TheGateway"/>
+    	<jms-listener busidref="Aggregator" is-gateway="true" name="router"/>
    </listeners>
-   <actions mep="OneWay">
-   		
-   	   <action class="util.messageHandler" process="getContextBack" name="loadCxtInfo" />
+   <actions mep="OneWay"> 		
+   	   <action class="util.Context" process="getContextBack" name="loadCxtInfo" />
 	   <action class="org.jboss.soa.esb.actions.Aggregator" name="Aggregator">
            <property name="timeoutInMillies" value="60000"/>
        </action>
@@ -126,8 +109,6 @@
 			<property name="security-credential" value="guest"/>
 	   </action>
    </actions>
-   </service>
-
-  
+   </service> 
  </services>
 </jbossesb>

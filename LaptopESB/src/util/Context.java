@@ -17,18 +17,17 @@ import org.jboss.soa.esb.helpers.ConfigTree;
 import org.jboss.soa.esb.listeners.message.MessageDeliverException;
 import org.jboss.soa.esb.message.Message;
 
-public class messageHandler extends AbstractActionLifecycle
+public class Context extends AbstractActionLifecycle
 {
 
 	 protected ConfigTree _config;
 
-	 public messageHandler(ConfigTree config) {
+	 public Context(ConfigTree config) {
 	  _config = config;
 	 }
 
 
-	public Message keepContext(Message message) throws MessageDeliverException
-	{
+	public Message keepContext(Message message) throws MessageDeliverException{
 
 		Map<String, Object> outmap = new HashMap<String, Object>();
 		outmap.put("body", message.getBody().get());
@@ -40,6 +39,7 @@ public class messageHandler extends AbstractActionLifecycle
 
 	public Message getContextBack(Message message) throws MessageDeliverException
 	{
+		@SuppressWarnings("unchecked")
 		Map<String, Object> map = (Map<String, Object>) message.getBody().get();
 		Object body = (Object) map.get("body");
 		message.getBody().add(body);
